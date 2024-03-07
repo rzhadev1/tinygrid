@@ -10,3 +10,4 @@ A compact, toy implementation of a mixed integer linear programming solver for p
 3. https://github.com/PyPSA/PyPSA
 4. https://adamgreenhall.github.io/minpower/index.html
 5. https://optimization-online.org/wp-content/uploads/2018/11/6930.pdf
+6. https://ieeexplore.ieee.org/xpl/ebooks/bookPdfWithBanner.jsp?fileName=7046729.pdf&bkn=7043963&pdfType=chapter&tag=1
