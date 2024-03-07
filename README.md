@@ -11,3 +11,4 @@ A compact, toy implementation of a mixed integer linear programming solver for p
 4. https://adamgreenhall.github.io/minpower/index.html
 5. https://optimization-online.org/wp-content/uploads/2018/11/6930.pdf
 6. https://ieeexplore.ieee.org/xpl/ebooks/bookPdfWithBanner.jsp?fileName=7046729.pdf&bkn=7043963&pdfType=chapter&tag=1
+7. https://cfaed.tu-dresden.de/files/user/mtimme/publications/Ronellenfitsch_et_al_A%20dual%20method%20for%20computing%20power%20transfer%20distribution%20factors_IEEEPowSys_2016.pdf
