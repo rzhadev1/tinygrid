@@ -9,15 +9,8 @@ TODO:
 - Use linear expressions to simply all constraints/objective functions (for speed)
 '''
 
-class Network():
+class Netwosrk():
 
-    def objective_expr(m): 
-        return sum(sum(
-            m.cg[g, t] + m.p_cost[g, 1] * m.ug[g,t] + \
-                sum(m.su_cost[g, s] * m.dg[t, g, s] for s in m.su_cats[g])
-            for t in m.t_steps)
-        for g in m.tgens)
-    
     m = AbstractModel()
     m.tgens = Set() # thermal gens 
     m.tgens_t0_on = Set() # thermal gens on at t_0 
@@ -76,8 +69,6 @@ class Network():
     m.rampupt0_constr = Constraint(m.tgens)
     m.rampdownt0_constr = Constraint(m.tgens)
     m.shutdownt0_constr = Constraint(m.tgens)
-
-
 
     def add_generator(generator):
         pass
