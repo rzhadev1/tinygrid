@@ -12,4 +12,12 @@ This is an implementation of the linearized (DC) security constrained economic d
 3. minpower 
 4. PyPSA
 5. Cost-optimal power system extension under flow-based market
-coupling
+coupling 
+6. https://github.com/karpathy/micrograd/blob/master/micrograd/nn.py
+7. https://matpower.org/docs/ref/matpower5.0/caseformat.html
+8. Mathematical Programming for Power Systems Operation
+9. Optimization of Power System Operation
+10. A Dual Method for Computing Power Transfer
+Distribution Factors
+11. https://invenia.github.io/blog/2021/06/18/opf-intro/
+12. https://faculty.sites.iastate.edu/tesfatsi/archive/econ458/tesfatsion/lmp.AdvancedWPM.ELitvinovWEM301.pdf
