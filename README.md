@@ -11,3 +11,5 @@ This is an implementation of the linearized (DC) security constrained economic d
 2. https://github.com/power-grid-lib/pglib-uc/blob/master/MODEL.pdf
 3. minpower 
 4. PyPSA
+5. Cost-optimal power system extension under flow-based market
+coupling
