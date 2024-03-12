@@ -1,12 +1,29 @@
 # tinygrid 
 
-This is an implementation of the linearized (DC) security constrained economic dispatch problem (SCED). The main goal is to learn pyomo and the properties of SCED, while attempting to create a lightweight and minimalist implementation.  
+tinygrid is an implementation of the linearized (DC) security constrained economic dispatch problem (SCED), written in pyomo. 
 
+tinygrid is currently tested on the sample Texas ERCOT grid provided by Texas A&M. 
+## Background 
 
-# TODO 
-- implement B, theta flow constraint
-- work on dispatch solution, getting duals, making output
+To fix ideas, this section provides the math background needed to understand the basics of SCED. I borrow heavily from a variety of resources that are referenced below. 
+
+The reduced representation of the electrical grid can be compactly described as a graph: 
+- Bus: a node in the graph, usually representing a substation (groupings of transformers in the physical grid). Generators are located at a unique bus. 
+- Branch: a branch is an edge that connects two buses in the graph. They are defined by a fixed MW capacity, limiting the amount of power flow that is able to be transmitted via a single line. 
+
+Under this model, we view the electrical grid as having constant valued demand (load) and clusters of generators at each bus. 
+
+A transmission line has a fundamental physical value called its $\textbf{impedence}$. This is defined as (note that in EE, they usually use $j$ for an imaginary value): 
+$$Z = r + jx$$
+
+$r$ is the resistance of the branch, which is how resistant the branch is to the flow of power. When power flows through a branch, thermal energy is dissipated in the form of heat due to resistance, and some energy is lost from the system. 
+
+$x$ is the reactance of the branch, which does not produce any loss effects, but instead has an effect of storing and returning energy to the system. 
+## Formulation
+
+Note that pyomo does not allow for externel functions (without a lot of effort) to be used within a model. 
 # References 
+0. https://electricgrids.engr.tamu.edu/
 1. https://optimization-online.org/wp-content/uploads/2018/11/6930.pdf
 2. https://github.com/power-grid-lib/pglib-uc/blob/master/MODEL.pdf
 3. minpower 

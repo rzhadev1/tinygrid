@@ -2,8 +2,9 @@ from pyomo.environ import *
 import numpy as np
 import pandas as pd
 from pyomo.opt import SolverFactory
-from pyomo.core.kernel.piecewise_library.transforms import PiecewiseLinearFunction
 
+#from pyomo.core.kernel.piecewise_library.transforms import PiecewiseLinearFunction
+#shouldnt mix kerel and environ
 class Bus(): # a bus is a node in the graph with demand, generators, and branches in/out
 	def __init__(self, n, t, i, l): 
 		self.name = n
@@ -19,8 +20,8 @@ class Bus(): # a bus is a node in the graph with demand, generators, and branche
 class Generator(): 
 	_idx = 0
 	def __init__(self, pts, ab, s, pmin, pmax): # pts is a set of (mw, cost) pairs
-		pts = np.array(pts)
-		self.cost_f = PiecewiseLinearFunction(pts[:, 0], pts[:, 1], validate=False)
+		self.pts = np.array(pts)
+		self.cost_f = lambda mw: np.interp(mw, self.pts[:, 0], self.pts[:, 1])
 		self.at_bus_id = ab # the bus where the gen is located 
 		self.status = s # whether the generator is off or not at t0
 		self.pmin = pmin # minimum real power output 
@@ -31,6 +32,12 @@ class Generator():
 
 	def __repr__(self): 
 		return f"{self.at_bus_id}, {self.status}, {self.pmin}, {self.pmax}"
+
+	def __call__(self, mw): # return the cost at a mw amount
+		return self.cost_f(mw)
+	
+	def get_cost_breakpts(self): # return the mw breakpoints in cost func
+		return self.pts[:, 0].tolist()
 
 class Branch(): # a branch is an edge between two buses
 
