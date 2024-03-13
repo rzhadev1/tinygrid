@@ -7,6 +7,9 @@ import pandas as pd
 
 '''
 TODO: shouldnt mix both kernel and environ, using kernel in Generator for cost function
+- cost function stuff using piecewise creates integer problem, cant solve
+- rewrite using integers? or maybe interpolate with polynomial function first, then use a linear function
+- maybe can solve to find c_pg, then fix the cost variables, deactivate integer constraints, then resolve and find duals. 
 '''
 
 class Network(): # a graph of the electrical grid
