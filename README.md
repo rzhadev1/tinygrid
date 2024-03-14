@@ -20,6 +20,8 @@ $x$ is the reactance of the branch, which does not produce any loss effects, but
 ## Formulation
 
 Note that pyomo does not allow for externel functions (without a lot of effort) to be used within a model. This is making applying piecewise linear functions more complicated, see: https://stackoverflow.com/questions/40873161/pyomo-constraint-with-if-statements
+
+https://pyomo.readthedocs.io/en/stable/developer_reference/expressions/design.html
 # References 
 0. https://electricgrids.engr.tamu.edu/
 1. https://optimization-online.org/wp-content/uploads/2018/11/6930.pdf
