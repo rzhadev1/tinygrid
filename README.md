@@ -5,8 +5,6 @@ tinygrid is an implementation of the linearized (DC) security constrained econom
 tinygrid is currently tested on the sample Texas ERCOT grid provided by Texas A&M. 
 ## Background 
 
-To fix ideas, this section provides the math background needed to understand the basics of SCED. I borrow heavily from a variety of resources that are referenced below. 
-
 The reduced representation of the electrical grid can be compactly described as a graph: 
 - Bus: a node in the graph, usually representing a substation (groupings of transformers in the physical grid). Generators are located at a unique bus. 
 - Branch: a branch is an edge that connects two buses in the graph. They are defined by a fixed MW capacity, limiting the amount of power flow that is able to be transmitted via a single line. 

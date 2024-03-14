@@ -1,5 +1,5 @@
 import pandas as pd 
-from network import Network
+from network_refactored import Network
 from component import Bus, Branch, Generator
 
 def network_from_csv(bus_file, branch_file, gen_file, gen_cost_file): 

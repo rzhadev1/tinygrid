@@ -35,11 +35,11 @@ class Network(): # a graph of the electrical grid
 			return self.branch_set[branch_id].rating
 		
 		def gen_limit_rule(m, gen_id): # bounds on generator output from param 
+			#return (m.gen_output_lim[gen_id, 'min'], m.gen_output_lim[gen_id, 'max'])
 			return (m.gen_output_lim[gen_id, 'min'], m.gen_output_lim[gen_id, 'max'])
-			#return (0, m.gen_output_lim[gen_id, 'max'])
 		def flow_limit_rule(m, branch_id): # bounds on line flow from param
+			#return (m.line_rating[branch_id, 'min'], m.line_rating[branch_id, 'max'])
 			return (m.line_rating[branch_id, 'min'], m.line_rating[branch_id, 'max'])
-			#return (0, m.line_rating[branch_id, 'max'])
 		def power_flow(m, branch_id): 
 			branch = self.branch_set[branch_id]
 			return m.f_k[branch_id] == (1 / branch.x) * \
@@ -67,37 +67,39 @@ class Network(): # a graph of the electrical grid
 		self._model.pw_cost = Piecewise(self.gen_set.keys(), self._model.c_pg, self._model.pg, 
 																		pw_pts={g.id:g.get_cost_breakpts() for g in self.gen_set.values()},
 																		f_rule=cost_func, pw_constr_type='EQ', 
-																		pw_repn='INC', warn_domain_coverage=True)
+																		pw_repn='INC', warn_domain_coverage=True) # assign costs of generation based on interval
 		self._model.demand = Constraint(expr=sum([self._model.pg[gen_id] for gen_id in self.gen_set.keys()]) == self._model.total_load)
 
 		#self._model.gen_limit = Constraint(self.gen_set.keys(), rule=gen_limit_rule) # gens are within thermal limits
 		#self._model.flow_limit = Constraint(self.branch_set.keys(), rule=flow_limit_rule) # branches are within limits
 		self._model.power_flow = Constraint(self.branch_set.keys(), rule=power_flow) # B,theta model for flow equations
 		self._model.slack_bus_eq = Constraint(expr=self._model.theta_b[self.slack_bus.id] == 0) # reference bus has 0 angle
-		
-		'''
-		self._model.obj = Objective(expr=\
-			sum([self.gen_set[gen_id].cost_f(self._model.pg[gen_id]) for gen_id in self.gen_set.keys()]), sense=minimize)
-		'''
-
 		self._model.obj = Objective(expr=sum([self._model.c_pg[gen_id] for gen_id in self.gen_set.keys()]), sense=minimize)
 
-
-		self._model.dual = Suffix(direction=Suffix.IMPORT)
+		#self._model.dual = Suffix(direction=Suffix.IMPORT)
 		self.built = True
 		return self.built
 	
 	def solve(self, solver='glpk'): 
 		opt = SolverFactory(solver)
-		res = opt.solve(self._model, tee=True)
+		res = opt.solve(self._model)
 		assert(res.solver.status == SolverStatus.ok)
 		assert(res.solver.termination_condition == TerminationCondition.optimal)
 		
+		# we solved the model, but now need to obtain the duals. Fix the values and disable the integer constraints 
+		# used to model the piecewise linear functions. 
+		
+		for g in self.gen_set.keys():
+			self._model.c_pg[g].fix() # fix the cost to generate for each generator
+
+		self._model.pw_cost.deactivate() # deactivate piecewise (integer under the hood) constraints
+		
+		self._model.dual = Suffix(direction=Suffix.IMPORT)
+		res = opt.solve(self._model, tee=True)
+		assert(res.solver.status == SolverStatus.ok)
+		assert(res.solver.termination_condition == TerminationCondition.optimal)
 		self._model.pprint()
-		for c in self._model.component_objects(Constraint, active=True):
-			print("   Constraint", c)
-			for index in c:
-				print("      ", index, self._model.dual[c[index]])
+
 
 	def add_bus(self, bus): # add a node to the graph
 		self.bus_set[bus.id] = bus

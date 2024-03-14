@@ -9,7 +9,8 @@ gen_cost_file = os.path.join(case_file_pth, 'gencost.csv')
 
 if __name__ == '__main__':
 	network = network_from_csv(bus_file, branch_file, gen_file, gen_cost_file)
+	print(repr(network))
 	ret = network.build()
 	assert(ret)
-	network.solve()
+	network.solve('appsi_highs')
 	
